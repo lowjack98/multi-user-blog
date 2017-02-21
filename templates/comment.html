@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if action == 'Delete' %}
+  <h2 class="text-center">Warning!</h2>
+  <p class="text-center text-danger">
+    Are you sure you want to delete the following?
+  </p>
+  <p class="text-center text-default">
+    <strong>Post Title:</strong> {{ post.subject }}
+  </p>
+  <p class="text-center text-default">
+    <strong>Comment:</strong> {{ comment }}
+  </p>
+  <div class="text-center">
+    <nav>
+      <ul class="pager">
+        <li>
+          <form method="post" class="inline">
+            <button type="submit" class="btn btn-lg btn-danger btn-round-lg">Delete</button>
+          </form>
+        </li>
+        <li>
+          <form method="get" action="/blog" class="inline">
+            <button type="submit" class="btn btn-lg btn-default btn-round-lg">Cancel</button>
+          </form>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <p class="text-center">
+    <a href="\blog">Home</a>
+  </p>
+  {% else %}
+  <h2>{{ action }} Comment</h2>
+
+  <form method="post">
+    <div class="form-group">
+      <label for="inputSubject">Blog Title</label>
+      <input type="text" id="inputSubject" name="subject" value="{{ post.subject }}" class="form-control" placeholder="Title" disabled>
+      <input type="hidden" name="action" value="{{ action }}">
+    </div>
+    <div class="form-group">
+      <label for="inputComment">Comment</label>
+      <textarea id="inputComment" name="comment" class="form-control" placeholder="Comment" style="height: 15em;" required autofocus>{{ comment }}</textarea>
+    </div>
+    <div class="help-block">
+      <p class="text-danger">
+        {{ error }}
+      </p>
+    </div>
+    <button type="submit" class="btn btn-lg btn-primary btn-round-lg">{{ action }}</button>
+  </form>
+  {% endif %}
+{% endblock %}

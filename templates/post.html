@@ -1,0 +1,8 @@
+<div class="blog-post">
+  <h2 class="blog-post-title">{{p.subject}}</h2>
+  <p class="blog-post-meta">{{p.created.strftime("%b %d, %Y")}} by <a href="/blog/author/{{p.author}}">{{p.author}}</a></p>
+  <hr>
+  <p>
+    {{p._render_text | safe}}
+  </p>
+</div><!-- /.blog-post -->

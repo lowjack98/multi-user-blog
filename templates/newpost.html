@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>New Post</h2>
+
+  <form method="post">
+    <div class="form-group">
+      <label for="inputSubject">Blog Title</label>
+      <input type="text" id="inputSubject" name="subject" value="{{subject}}" class="form-control" placeholder="Title" required autofocus>
+    </div>
+    <div class="form-group">
+      <label for="inputContent">Blog Content</label>
+      <textarea id="inputContent" name="content" class="form-control" placeholder="Blog" style="height: 15em;" required>{{content}}</textarea>
+    </div>
+    <div class="help-block">
+      <p class="text-danger">
+        {{error}}
+      </p>
+    </div>
+    <button type="submit" class="btn btn-lg btn-primary btn-round-lg">Add</button>
+  </form>
+{% endblock %}

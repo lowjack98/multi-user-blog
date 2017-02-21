@@ -1,0 +1,31 @@
+<nav>
+  <ul class="pager" style="text-align: left;">
+    {% if user.name == post.author %}
+    <li><a href="/blog/edit/{{post.key().id()}}">Edit</a></li>
+    <li><a href="/blog/delete/{{post.key().id()}}">Delete</a></li>
+    {% else %}
+    <li>
+      <form method="post" action="/blog/like/{{post.key().id()}}" class="inline">
+        <button type="submit" class="btn btn-lg btn-default btn-round-lg" {% if not user %}disabled{% endif %}><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span><span class="badge">{{likes.likes_by_post(post.key().id(),'like')}}</span></button>
+      </form>
+    </li>
+    <li>
+      <form method="post" action="/blog/dislike/{{post.key().id()}}" class="inline">
+        <button type="submit" class="btn btn-lg btn-default btn-round-lg" {% if not user %}disabled{% endif %}><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true" ></span><span class="badge">{{likes.likes_by_post(post.key().id(),'dislike')}}</span></button>
+      </form>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+<div style="margin-top: 20px">
+  <h4>Comments {% if user %}<h6><a href="/blog/comment/add/{{post.key().id()}}">-Add Comment-</a></h6>{% endif %}</h4>
+  {% for c in comments.comments_by_post(post.key().id()) %}
+  <blockquote class="comments">
+    <p>{{ c.comment }}</p>
+    <footer>{{ c.author }} @ <cite title="Source Title">{{ c.created.strftime('%m/%d/%y %H:%M') }}</cite></footer>
+    {% if user.name == c.author %}
+    <h6><a href="/blog/comment/edit/{{c.key().id()}}">-Edit-</a> <a href="/blog/comment/delete/{{c.key().id()}}">-Delete-</a></h6>
+    {% endif %}
+  </blockquote>
+  {% endfor %}
+</div>

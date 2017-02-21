@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  {% for post in posts %}
+    {{ post.render() | safe }}
+    {% include "post-controls.html" %}
+    <br><br>
+  {% endfor %}
+
+{% endblock %}

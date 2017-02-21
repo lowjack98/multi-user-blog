@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Edit Post</h2>
+
+  <form method="post">
+    <div class="form-group">
+      <label for="inputSubject">Blog Title</label>
+      <input type="text" id="inputSubject" name="subject" value="{{post.subject}}" class="form-control" placeholder="Title" required autofocus>
+    </div>
+    <div class="form-group">
+      <label for="inputContent">Blog Content</label>
+      <textarea id="inputContent" name="content" class="form-control" placeholder="Blog" style="height: 15em;" required>{{post.content}}</textarea>
+    </div>
+    <div class="help-block">
+      <p class="text-danger">
+        {{error}}
+      </p>
+    </div>
+    <nav>
+      <ul class="pager">
+        <li>
+          <button type="submit" class="btn btn-lg btn-primary btn-round-lg">Edit</button>
+          </form>
+        </li>
+        <li>
+          <form method="get" action="/blog" class="inline">
+            <button type="submit" class="btn btn-lg btn-default btn-round-lg">Cancel</button>
+          </form>
+        </li>
+      </ul>
+
+{% endblock %}
