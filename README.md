@@ -31,8 +31,10 @@ and comment on their posts.
 ## To run this using google app engine.
 
 ### Create and install google app engine.
-### Once you have an account, fork to 'https://github.com/lowjack98/multi-user-blog.git'
-### from that directory, you can intall it locally and test it using google app engine.
- execute the command '''dev_appserver.py .'''
+### Once you have an account, fork to
+ 'https://github.com/lowjack98/multi-user-blog.git'
+### From that directory, you can install it locally and test it using google app engine.
+ run: `dev_appserver.py .`
 
-### to load the blog in your public google app engine execute the command '''gcloud app deploy --project=<the name of your app>'''
+### To load the blog in your public google app engine
+ run: `gcloud app deploy --project=<the name of your app>`
