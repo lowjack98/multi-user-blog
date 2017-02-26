@@ -1,11 +1,10 @@
 import os
 import re
-# import random
-# import hashlib
+import random
+import hashlib
 import hmac
-# import logging
-# import time
-# from string import letters
+import time
+from string import letters
 
 import webapp2
 import jinja2
@@ -235,9 +234,6 @@ class DeleteComment(BlogHandler):
         if not post:
             message = "Could not find post associated with this comment."
             self.render("error.html", message=message, user=self.user)
-        if self.user.name == post.author:
-            message = "You can not delete comments on posts you created."
-            self.render("error.html", message=message, user=self.user)
         if self.user.name != c.author:
             message = "You can not delete comments you did not created."
             self.render("error.html", message=message, user=self.user)
@@ -256,9 +252,6 @@ class DeleteComment(BlogHandler):
             self.render("error.html", message=message, user=self.user)
         if not post:
             message = "Could not find post associated with this comment."
-            self.render("error.html", message=message, user=self.user)
-        if self.user.name == post.author:
-            message = "You can not delete comments on posts you created."
             self.render("error.html", message=message, user=self.user)
         if self.user.name != c.author:
             message = "You can not delete comments you did not created."
@@ -283,7 +276,7 @@ class DeletePost(BlogHandler):
             self.redirect("/login")
         else:
             message = "This post does not exist."
-            self.render("error.html", message=message, user=self.user)
+            self.render("error.html", post=post, message=message, user=self.user)
 
     def post(self, post_id):
         key = db.Key.from_path('Post', int(post_id), parent=blog_key())
@@ -294,7 +287,7 @@ class DeletePost(BlogHandler):
                 time.sleep(0.5)
                 self.redirect('/blog')
             else:
-                message = "You can not edit posts you did not create."
+                message = "You can not delete posts you did not create."
                 self.render("error.html", message=message, user=self.user)
         elif not self.user:
             self.redirect("/login")
@@ -317,9 +310,6 @@ class EditComment(BlogHandler):
         if not post:
             message = "Could not find post associated with this comment."
             self.render("error.html", message=message, user=self.user)
-        if self.user.name == post.author:
-            message = "You can not comment on posts you created."
-            self.render("error.html", message=message, user=self.user)
         self.render("comment.html", post=post, user=self.user,
                     comment=c.comment, action='Edit')
 
@@ -336,9 +326,6 @@ class EditComment(BlogHandler):
             self.render("error.html", message=message, user=self.user)
         if not post:
             message = "Could not find post associated with this comment."
-            self.render("error.html", message=message, user=self.user)
-        if self.user.name == post.author:
-            message = "You can not comment on posts you created."
             self.render("error.html", message=message, user=self.user)
         if comment:
             c.comment = comment
