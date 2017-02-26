@@ -1,10 +1,8 @@
-# Guestbook
+# Multi-user Blog
 
-Guestbook is an example application showing basic usage of Google App
-Engine. Users can read & write text messages and optionaly log-in with
-their Google account. Messages are stored in App Engine (NoSQL)
-High Replication Datastore (HRD) and retrieved using a strongly consistent
-(ancestor) query.
+This is a multi-user basic blog. Users can request an account and need to login
+to use any more than read-only on the blog. Once logged in, a user can add, edit
+and comment on their posts.
 
 ## Products
 - [App Engine][1]
@@ -30,23 +28,11 @@ High Replication Datastore (HRD) and retrieved using a strongly consistent
 [7]: http://twitter.github.com/bootstrap/
 
 
-## E2E Test for this sample app
+## To run this using google app engine.
 
-A Makefile is provided to deploy and run the e2e test.
+### Create and install google app engine.
+### Once you have an account, fork to 'https://github.com/lowjack98/multi-user-blog.git'
+### from that directory, you can intall it locally and test it using google app engine.
+ execute the command '''dev_appserver.py .'''
 
-To run:
-
-     export GAE_PROJECT=your-project-id
-     make
-
-To manually run, install the requirements
-
-    pip install -r e2e/requirements-dev.txt
-
-Set the environment variable to point to your deployed app:
-
-    export GUESTBOOK_URL="http://guestbook-test-dot-useful-temple-118922.appspot.com/"
-
-Finally, run the test
-
-    python e2e/test_e2e.py
+### to load the blog in your public google app engine execute the command '''gcloud app deploy --project=<the name of your app>'''
