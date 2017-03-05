@@ -227,17 +227,17 @@ class DeleteComment(BlogHandler):
         key = db.Key.from_path('Post', int(c.post_id), parent=blog_key())
         post = db.get(key)
         if not self.user:
-            self.redirect("/login")
+            return self.redirect("/login")
         if not c:
             message = "This comment does not exist."
-            self.render("error.html", message=message, user=self.user)
+            return self.render("error.html", message=message, user=self.user)
         if not post:
             message = "Could not find post associated with this comment."
-            self.render("error.html", message=message, user=self.user)
+            return self.render("error.html", message=message, user=self.user)
         if self.user.name != c.author:
             message = "You can not delete comments you did not created."
-            self.render("error.html", message=message, user=self.user)
-        self.render("comment.html", post=post, user=self.user,
+            return self.render("error.html", message=message, user=self.user)
+        return self.render("comment.html", post=post, user=self.user,
                     comment=c.comment, action='Delete')
 
     def post(self, comment_id):
@@ -246,16 +246,16 @@ class DeleteComment(BlogHandler):
         key = db.Key.from_path('Post', int(c.post_id), parent=blog_key())
         post = db.get(key)
         if not self.user:
-            self.redirect("/login")
+            return self.redirect("/login")
         if not c:
             message = "This comment does not exist."
-            self.render("error.html", message=message, user=self.user)
+            return self.render("error.html", message=message, user=self.user)
         if not post:
             message = "Could not find post associated with this comment."
-            self.render("error.html", message=message, user=self.user)
+            return self.render("error.html", message=message, user=self.user)
         if self.user.name != c.author:
             message = "You can not delete comments you did not created."
-            self.render("error.html", message=message, user=self.user)
+            return self.render("error.html", message=message, user=self.user)
         else:
             c.delete()
             time.sleep(0.5)
@@ -268,15 +268,15 @@ class DeletePost(BlogHandler):
         post = db.get(key)
         if post and self.user:
             if self.user.name == post.author or self.user.name == 'admin':
-                self.render("delete.html", post=post, user=self.user)
+                return self.render("delete.html", post=post, user=self.user)
             else:
                 message = "You can not delete posts you did not create."
-                self.render("error.html", message=message, user=self.user)
+                return self.render("error.html", message=message, user=self.user)
         elif not self.user:
             return self.redirect("/login")
         else:
             message = "This post does not exist."
-            self.render("error.html", post=post, message=message,
+            return self.render("error.html", post=post, message=message,
                         user=self.user)
 
     def post(self, post_id):
@@ -289,12 +289,12 @@ class DeletePost(BlogHandler):
                 return self.redirect('/blog')
             else:
                 message = "You can not delete posts you did not create."
-                self.render("error.html", message=message, user=self.user)
+                return self.render("error.html", message=message, user=self.user)
         elif not self.user:
             return self.redirect("/login")
         else:
             message = "This post does not exist."
-            self.render("error.html", message=message, user=self.user)
+            return self.render("error.html", message=message, user=self.user)
 
 
 class EditComment(BlogHandler):
@@ -307,14 +307,14 @@ class EditComment(BlogHandler):
             return self.redirect("/login")
         if not c:
             message = "This comment does not exist."
-            self.render("error.html", message=message, user=self.user)
+            return self.render("error.html", message=message, user=self.user)
         if not post:
             message = "Could not find post associated with this comment."
-            self.render("error.html", message=message, user=self.user)
-        if self.user != c.author:
+            return self.render("error.html", message=message, user=self.user)
+        if self.user.name != c.author:
             message = "You can only edit your own comments."
-            self.render("error.html", message=message, user=self.user)
-        self.render("comment.html", post=post, user=self.user,
+            return self.render("error.html", message=message, user=self.user)
+        return self.render("comment.html", post=post, user=self.user,
                     comment=c.comment, action='Edit')
 
     def post(self, comment_id):
@@ -327,13 +327,13 @@ class EditComment(BlogHandler):
             return self.redirect("/login")
         if not c:
             message = "This comment does not exist."
-            self.render("error.html", message=message, user=self.user)
+            return self.render("error.html", message=message, user=self.user)
         if not post:
             message = "Could not find post associated with this comment."
-            self.render("error.html", message=message, user=self.user)
-        if self.user != c.author:
+            return self.render("error.html", message=message, user=self.user)
+        if self.user.name != c.author:
             message = "You can only edit your own comments."
-            self.render("error.html", message=message, user=self.user)
+            return self.render("error.html", message=message, user=self.user)
         if comment:
             c.comment = comment
             c.put()
@@ -341,7 +341,7 @@ class EditComment(BlogHandler):
             return self.redirect('/blog/%s' % str(post.key().id()))
         else:
             error = "Enter a comment, please!"
-            self.render("comment.html", post=post, user=self.user,
+            return self.render("comment.html", post=post, user=self.user,
                         comment=comment, error=error, action='Edit')
 
 
@@ -351,15 +351,15 @@ class EditPost(BlogHandler):
         post = db.get(key)
         if post and self.user:
             if self.user.name == post.author or self.user.name == 'admin':
-                self.render("editpost.html", post=post, user=self.user)
+                return self.render("editpost.html", post=post, user=self.user)
             else:
                 message = "You can not edit posts you did not create."
-                self.render("error.html", message=message, user=self.user)
+                return self.render("error.html", message=message, user=self.user)
         elif not self.user:
             return self.redirect("/login")
         else:
             message = "This post does not exist."
-            self.render("error.html", message=message, user=self.user)
+            return self.render("error.html", message=message, user=self.user)
 
     def post(self, post_id):
         key = db.Key.from_path('Post', int(post_id), parent=blog_key())
@@ -374,40 +374,40 @@ class EditPost(BlogHandler):
                     return self.redirect('/blog/%s' % post_id)
                 else:
                     error = "Enter a title and content, please!"
-                    self.render("editpost.html", post=post, user=self.user,
+                    return self.render("editpost.html", post=post, user=self.user,
                                 error=error)
             else:
                 message = "You can not edit posts you did not create."
-                self.render("error.html", message=message, user=self.user)
+                return self.render("error.html", message=message, user=self.user)
         elif not self.user:
             return self.redirect("/login")
         else:
             message = "This post does not exist."
-            self.render("error.html", message=message, user=self.user)
+            return self.render("error.html", message=message, user=self.user)
 
 
 class LikePost(BlogHandler):
     # get should never be used unless user forces it. redirect if that happens
     def get(self, route_id):
         if self.user:
-            self.redirect("/blog")
+            return self.redirect("/blog")
         else:
-            self.redirect("/login")
+            return self.redirect("/login")
 
     def post(self, route_id):
         post_id = route_id.split("/")[1]
         like_type = route_id.split("/")[0]
         if not self.user:
-            self.redirect("/login")
+            return self.redirect("/login")
         key = db.Key.from_path('Post', int(post_id), parent=blog_key())
         post = db.get(key)
         hasLiked = Likes.by_post_id(post.key().id(), self.user.name)
         if not post:
             message = "This post does not exist."
-            self.render("error.html", message=message, user=self.user)
+            return self.render("error.html", message=message, user=self.user)
         if self.user.name == post.author:
             message = "You can not '"+like_type+"' posts you created."
-            self.render("error.html", message=message, user=self.user)
+            return self.render("error.html", message=message, user=self.user)
         if not hasLiked:
             like = Likes(post_id=post.key().id(), author=self.user.name,
                          like_type=like_type)
@@ -415,10 +415,10 @@ class LikePost(BlogHandler):
             time.sleep(0.5)
             message = ("You have just '" + like_type + "' the post titled: " +
                        post.subject + ".")
-            self.render("message.html", message=message, user=self.user)
+            return self.render("message.html", message=message, user=self.user)
         else:
             message = "You have already 'Liked/Disliked' this post."
-            self.render("error.html", message=message, user=self.user)
+            return self.render("error.html", message=message, user=self.user)
 
 
 class Login(BlogHandler):
@@ -435,7 +435,7 @@ class Login(BlogHandler):
             return self.redirect('/welcome')
         else:
             message = 'Invalid login'
-            self.render('login-form.html', message=message)
+            return self.render('login-form.html', message=message)
 
 
 class Logout(BlogHandler):
@@ -444,9 +444,9 @@ class Logout(BlogHandler):
             prev_user = self.user.name
             self.logout()
             self.user = ''
-            self.render('goodbye.html', username=prev_user)
+            return self.render('goodbye.html', username=prev_user)
         else:
-            self.redirect('/signup')
+            return self.redirect('/signup')
 
 
 class MainPage(BlogHandler):
@@ -460,13 +460,13 @@ class NewComment(BlogHandler):
         key = db.Key.from_path('Post', int(post_id), parent=blog_key())
         post = db.get(key)
         if not self.user:
-            self.redirect("/login")
+            return self.redirect("/login")
         if post:
-            self.render("comment.html", post=post, user=self.user,
+            return self.render("comment.html", post=post, user=self.user,
                         action='Add')
         else:
             message = "This post does not exist."
-            self.render("error.html", message=message, user=self.user)
+            return self.render("error.html", message=message, user=self.user)
 
     def post(self, post_id):
         if not self.user:
@@ -483,19 +483,19 @@ class NewComment(BlogHandler):
                 return self.redirect('/blog/%s' % str(post.key().id()))
             else:
                 error = "Enter a comment, please!"
-                self.render("newcomment.html", post=post, user=self.user,
+                return self.render("newcomment.html", post=post, user=self.user,
                             comment=comment, error=error)
         else:
             message = "This post does not exist."
-            self.render("error.html", message=message, user=self.user)
+            return self.render("error.html", message=message, user=self.user)
 
 
 class NewPost(BlogHandler):
     def get(self):
         if self.user:
-            self.render("newpost.html")
+            return self.render("newpost.html")
         else:
-            self.redirect("/login")
+            return self.redirect("/login")
 
     def post(self):
         if not self.user:
@@ -513,7 +513,7 @@ class NewPost(BlogHandler):
             return self.redirect('/blog/%s' % str(p.key().id()))
         else:
             error = "Enter a title and content, please!"
-            self.renderkey()("newpost.html", subject=subject, content=content,
+            return self.renderkey()("newpost.html", subject=subject, content=content,
                              error=error)
 
 
@@ -528,7 +528,7 @@ class PostPage(BlogHandler):
             message = "Page Not Found."
             return self.render("error.html", message=message, user=self.user)
 
-        self.render("permalink.html", post=post, user=self.user, likes=likes,
+        return self.render("permalink.html", post=post, user=self.user, likes=likes,
                     comments=comments)
 
 
@@ -562,9 +562,9 @@ class Signup(BlogHandler):
             have_error = True
 
         if have_error:
-            self.render('signup-form.html', **params)
+            return self.render('signup-form.html', **params)
         else:
-            self.done()
+            return self.done()
 
     def done(self, *a, **kw):
         raise NotImplementedError
@@ -585,7 +585,7 @@ class Register(Signup):
         u = User.by_name(self.username)
         if u:
             msg = 'That user already exists.'
-            self.render('signup-form.html', error_username=msg)
+            return self.render('signup-form.html', error_username=msg)
         else:
             u = User.register(self.username, self.password, self.email)
             u.put()

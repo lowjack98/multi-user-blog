@@ -4,6 +4,8 @@ This is a multi-user basic blog. Users can request an account and need to login
 to use any more than read-only on the blog. Once logged in, a user can add, edit
 and comment on their posts.
 
+To view a demo of this site goto: 'https://fswd-blog.appspot.com'
+
 ## Products
 - [App Engine][1]
 
